@@ -1,0 +1,641 @@
+2016-02-11 18:59:10: (log.c.194) server started 
+2016-02-11 18:59:15: (server.c.1456) [note] graceful shutdown started 
+2016-02-11 18:59:15: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-11 18:59:42: (log.c.194) server started 
+2016-02-11 18:59:58: (server.c.1456) [note] graceful shutdown started 
+2016-02-11 18:59:58: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-11 19:00:28: (log.c.194) server started 
+2016-02-11 19:00:42: (server.c.1456) [note] graceful shutdown started 
+2016-02-11 19:00:42: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-11 19:01:15: (log.c.194) server started 
+2016-02-11 19:01:23: (server.c.1456) [note] graceful shutdown started 
+2016-02-11 19:01:23: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-11 19:02:19: (log.c.194) server started 
+2016-02-11 19:02:36: (server.c.1456) [note] graceful shutdown started 
+2016-02-11 19:02:36: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-11 19:04:53: (log.c.194) server started 
+2016-02-11 19:05:07: (server.c.1456) [note] graceful shutdown started 
+2016-02-11 19:05:07: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-11 19:22:37: (log.c.194) server started 
+2016-02-11 19:22:45: (server.c.1456) [note] graceful shutdown started 
+2016-02-11 19:22:45: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-11 19:26:27: (log.c.194) server started 
+2016-02-11 19:26:27: (server.c.1053) WARNING: unknown config-key: themis-auth.loglevel (ignored) 
+2016-02-11 19:26:33: (server.c.1456) [note] graceful shutdown started 
+2016-02-11 19:26:33: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-11 19:28:25: (log.c.194) server started 
+2016-02-11 19:28:25: (server.c.1053) WARNING: unknown config-key: themis-auth.loglevel (ignored) 
+2016-02-11 19:28:29: (server.c.1456) [note] graceful shutdown started 
+2016-02-11 19:28:29: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-11 19:39:37: (log.c.194) server started 
+2016-02-11 19:39:37: (server.c.1053) WARNING: unknown config-key: themis-auth.loglevel (ignored) 
+2016-02-11 19:39:37: (server.c.1053) WARNING: unknown config-key: themis-auth.loglevel (ignored) 
+2016-02-11 19:39:43: (server.c.1456) [note] graceful shutdown started 
+2016-02-11 19:39:43: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-11 19:41:21: (log.c.194) server started 
+2016-02-11 19:42:10: (log.c.194) server started 
+2016-02-11 19:43:23: (log.c.194) server started 
+2016-02-12 15:23:21: (log.c.194) server started 
+2016-02-12 15:24:04: (log.c.194) server started 
+2016-02-12 15:24:12: (server.c.1456) [note] graceful shutdown started 
+2016-02-12 15:24:12: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-12 15:31:14: (log.c.194) server started 
+2016-02-12 15:31:47: (log.c.194) server started 
+2016-02-12 15:31:48: (server.c.1456) [note] graceful shutdown started 
+2016-02-12 15:31:48: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-12 15:31:55: (log.c.194) server started 
+2016-02-12 15:33:17: (log.c.194) server started 
+2016-02-12 15:33:31: (server.c.1456) [note] graceful shutdown started 
+2016-02-12 15:33:31: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-12 15:36:17: (log.c.194) server started 
+2016-02-12 15:36:25: (server.c.1456) [note] graceful shutdown started 
+2016-02-12 15:36:25: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-12 15:45:16: (log.c.194) server started 
+2016-02-12 15:46:56: (log.c.194) server started 
+2016-02-12 15:47:05: (server.c.1456) [note] graceful shutdown started 
+2016-02-12 15:47:05: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-12 15:47:36: (log.c.194) server started 
+2016-02-12 15:47:41: (server.c.1456) [note] graceful shutdown started 
+2016-02-12 15:47:41: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-12 15:48:34: (log.c.194) server started 
+2016-02-12 15:48:42: (server.c.1456) [note] graceful shutdown started 
+2016-02-12 15:48:42: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-12 16:12:38: (log.c.194) server started 
+2016-02-12 16:16:45: (server.c.1456) [note] graceful shutdown started 
+2016-02-12 16:16:45: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-12 16:16:53: (log.c.194) server started 
+2016-02-12 16:17:04: (server.c.1456) [note] graceful shutdown started 
+2016-02-12 16:17:04: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-02-12 16:17:24: (log.c.194) server started 
+2016-02-12 16:18:31: (server.c.1456) [note] graceful shutdown started 
+2016-02-12 16:18:31: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-15 13:47:32: (log.c.194) server started 
+2016-03-15 13:49:40: (server.c.1456) [note] graceful shutdown started 
+2016-03-15 13:49:40: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-15 16:19:14: (log.c.194) server started 
+2016-03-15 16:22:07: (server.c.1456) [note] graceful shutdown started 
+2016-03-15 16:22:07: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-15 16:22:22: (log.c.194) server started 
+2016-03-15 16:22:31: (server.c.1456) [note] graceful shutdown started 
+2016-03-15 16:22:31: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-15 16:56:51: (log.c.194) server started 
+2016-03-15 16:56:58: (server.c.1456) [note] graceful shutdown started 
+2016-03-15 16:56:58: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-15 17:25:35: (log.c.194) server started 
+2016-03-15 17:26:16: (server.c.1456) [note] graceful shutdown started 
+2016-03-15 17:26:16: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 09:32:36: (log.c.194) server started 
+2016-03-16 09:35:14: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 09:35:14: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 09:35:16: (log.c.194) server started 
+2016-03-16 09:42:50: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 09:42:50: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 09:42:51: (log.c.194) server started 
+2016-03-16 09:43:52: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 09:43:52: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 09:59:36: (log.c.194) server started 
+2016-03-16 10:04:15: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 10:04:15: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 10:04:16: (log.c.194) server started 
+2016-03-16 10:06:50: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 10:06:50: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 10:12:07: (log.c.194) server started 
+2016-03-16 10:12:27: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 10:12:27: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 10:12:29: (log.c.194) server started 
+2016-03-16 10:30:44: (request.c.1112) GET/HEAD with content-length -> 400 
+2016-03-16 10:31:21: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 10:31:21: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 10:31:23: (log.c.194) server started 
+2016-03-16 10:33:11: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 10:33:11: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 10:33:12: (log.c.194) server started 
+2016-03-16 10:35:34: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 10:35:34: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 10:35:36: (log.c.194) server started 
+2016-03-16 10:35:55: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 10:35:55: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 10:41:02: (log.c.194) server started 
+2016-03-16 10:41:04: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 10:41:05: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 10:41:32: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 10:41:32: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 10:41:37: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 10:41:38: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 10:41:51: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 10:41:51: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 10:45:42: (log.c.194) server started 
+2016-03-16 10:46:11: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 10:46:11: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 10:50:27: (log.c.194) server started 
+2016-03-16 10:57:37: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 10:57:37: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 10:58:54: (log.c.194) server started 
+2016-03-16 10:59:18: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 10:59:18: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 10:59:26: (log.c.194) server started 
+2016-03-16 11:02:05: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 11:02:05: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 11:02:09: (log.c.194) server started 
+2016-03-16 11:02:39: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 11:02:39: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 11:02:40: (log.c.194) server started 
+2016-03-16 11:03:03: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 11:03:03: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 11:10:50: (log.c.194) server started 
+2016-03-16 14:33:41: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 14:33:41: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 14:47:24: (log.c.194) server started 
+2016-03-16 14:49:22: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 14:49:22: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 14:50:04: (log.c.194) server started 
+2016-03-16 14:50:40: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 14:52:32: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 14:52:32: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 16:32:04: (log.c.194) server started 
+2016-03-16 16:32:08: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 16:32:09: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 16:33:32: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 16:33:32: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 16:54:59: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 16:54:59: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 16:55:17: (log.c.194) server started 
+2016-03-16 16:56:12: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 16:56:12: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 17:13:10: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 17:13:10: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 20:00:02: (log.c.194) server started 
+2016-03-16 20:00:05: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 20:00:05: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 20:00:51: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 20:00:51: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-16 20:01:01: (log.c.194) server started 
+2016-03-16 20:01:02: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 20:01:03: (connections.c.864) missing cleanup in themis-auth 
+2016-03-16 20:01:13: (server.c.1456) [note] graceful shutdown started 
+2016-03-16 20:01:13: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-17 22:34:38: (log.c.194) server started 
+2016-03-17 22:34:44: (connections.c.864) missing cleanup in themis-auth 
+2016-03-17 22:34:44: (connections.c.864) missing cleanup in themis-auth 
+2016-03-17 22:37:54: (server.c.1456) [note] graceful shutdown started 
+2016-03-17 22:37:54: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-19 08:41:11: (log.c.194) server started 
+2016-03-19 08:41:12: (connections.c.864) missing cleanup in themis-auth 
+2016-03-19 08:41:12: (connections.c.864) missing cleanup in themis-auth 
+2016-03-19 08:41:37: (connections.c.864) missing cleanup in themis-auth 
+2016-03-19 08:41:37: (connections.c.864) missing cleanup in themis-auth 
+2016-03-19 08:42:18: (server.c.1456) [note] graceful shutdown started 
+2016-03-19 08:42:18: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-19 08:43:36: (log.c.194) server started 
+2016-03-19 08:43:37: (connections.c.864) missing cleanup in themis-auth 
+2016-03-19 08:43:37: (connections.c.864) missing cleanup in themis-auth 
+2016-03-19 08:43:41: (connections.c.864) missing cleanup in themis-auth 
+2016-03-19 08:43:41: (connections.c.864) missing cleanup in themis-auth 
+2016-03-19 08:44:00: (server.c.1456) [note] graceful shutdown started 
+2016-03-19 08:44:00: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-19 08:44:17: (log.c.194) server started 
+2016-03-19 08:44:17: (connections.c.864) missing cleanup in themis-auth 
+2016-03-19 08:44:18: (connections.c.864) missing cleanup in themis-auth 
+2016-03-19 08:44:27: (server.c.1456) [note] graceful shutdown started 
+2016-03-19 08:44:27: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-19 08:44:28: (log.c.194) server started 
+2016-03-19 08:44:30: (connections.c.864) missing cleanup in themis-auth 
+2016-03-19 08:44:30: (connections.c.864) missing cleanup in themis-auth 
+2016-03-19 08:45:30: (server.c.1456) [note] graceful shutdown started 
+2016-03-19 08:45:30: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-19 08:45:43: (log.c.194) server started 
+2016-03-19 08:45:44: (connections.c.864) missing cleanup in themis-auth 
+2016-03-19 08:45:45: (connections.c.864) missing cleanup in themis-auth 
+2016-03-19 08:45:50: (server.c.1456) [note] graceful shutdown started 
+2016-03-19 08:45:50: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-19 08:46:26: (log.c.194) server started 
+2016-03-19 08:51:23: (server.c.1456) [note] graceful shutdown started 
+2016-03-19 08:51:23: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-19 08:51:55: (log.c.194) server started 
+2016-03-19 08:52:16: (server.c.1456) [note] graceful shutdown started 
+2016-03-19 08:52:16: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-19 21:56:39: (log.c.194) server started 
+2016-03-19 21:58:21: (log.c.194) server started 
+2016-03-19 22:00:43: (log.c.194) server started 
+2016-03-19 22:01:13: (server.c.1456) [note] graceful shutdown started 
+2016-03-19 22:01:13: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-19 22:01:15: (log.c.194) server started 
+2016-03-19 22:04:15: (server.c.1456) [note] graceful shutdown started 
+2016-03-19 22:04:15: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-19 22:04:25: (log.c.194) server started 
+2016-03-19 22:04:43: (server.c.1456) [note] graceful shutdown started 
+2016-03-19 22:04:43: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-19 22:05:15: (log.c.194) server started 
+2016-03-19 22:05:45: (server.c.1456) [note] graceful shutdown started 
+2016-03-19 22:05:45: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-20 07:47:00: (log.c.194) server started 
+2016-03-20 07:47:00: (server.c.1053) WARNING: unknown config-key: themis-auth.enable (ignored) 
+2016-03-20 07:47:00: (server.c.1053) WARNING: unknown config-key: themis-auth.loglevel (ignored) 
+2016-03-20 07:47:18: (server.c.1456) [note] graceful shutdown started 
+2016-03-20 07:47:18: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-20 07:48:26: (log.c.194) server started 
+2016-03-20 07:48:26: (server.c.1053) WARNING: unknown config-key: themis-auth.enable (ignored) 
+2016-03-20 07:48:26: (server.c.1053) WARNING: unknown config-key: themis-auth.loglevel (ignored) 
+2016-03-20 07:48:55: (server.c.1456) [note] graceful shutdown started 
+2016-03-20 07:48:55: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-20 07:50:28: (log.c.194) server started 
+2016-03-20 07:50:28: (server.c.1053) WARNING: unknown config-key: themis-auth.enable (ignored) 
+2016-03-20 07:50:28: (server.c.1053) WARNING: unknown config-key: themis-auth.loglevel (ignored) 
+2016-03-20 07:50:29: (server.c.1456) [note] graceful shutdown started 
+2016-03-20 07:50:29: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-20 07:50:39: (log.c.194) server started 
+2016-03-20 07:50:39: (server.c.1053) WARNING: unknown config-key: themis-auth.enable (ignored) 
+2016-03-20 07:50:39: (server.c.1053) WARNING: unknown config-key: themis-auth.loglevel (ignored) 
+2016-03-20 07:50:49: (server.c.1456) [note] graceful shutdown started 
+2016-03-20 07:50:49: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-20 07:52:36: (log.c.194) server started 
+2016-03-20 07:53:13: (server.c.1456) [note] graceful shutdown started 
+2016-03-20 07:53:13: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-20 07:53:42: (log.c.194) server started 
+2016-03-20 07:54:25: (server.c.1456) [note] graceful shutdown started 
+2016-03-20 07:54:25: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-20 07:54:26: (log.c.194) server started 
+2016-03-20 07:55:06: (server.c.1456) [note] graceful shutdown started 
+2016-03-20 07:55:06: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-20 07:55:11: (log.c.194) server started 
+2016-03-20 07:57:53: (server.c.1456) [note] graceful shutdown started 
+2016-03-20 07:57:53: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-20 07:58:16: (log.c.194) server started 
+2016-03-20 07:58:21: (server.c.1456) [note] graceful shutdown started 
+2016-03-20 07:58:21: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 08:36:46: (log.c.194) server started 
+2016-03-22 08:36:46: (server.c.1053) WARNING: unknown config-key: themis-auth.username (ignored) 
+2016-03-22 08:36:46: (server.c.1053) WARNING: unknown config-key: themis-auth.password (ignored) 
+2016-03-22 08:38:23: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 08:38:23: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 08:43:15: (log.c.194) server started 
+2016-03-22 08:43:15: (server.c.1053) WARNING: unknown config-key: themis-auth.username (ignored) 
+2016-03-22 08:43:15: (server.c.1053) WARNING: unknown config-key: themis-auth.password (ignored) 
+2016-03-22 08:46:46: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 08:46:46: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 08:48:00: (log.c.194) server started 
+2016-03-22 08:48:00: (server.c.1053) WARNING: unknown config-key: themis-auth.username (ignored) 
+2016-03-22 08:48:00: (server.c.1053) WARNING: unknown config-key: themis-auth.password (ignored) 
+2016-03-22 08:48:28: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 08:48:28: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 08:48:52: (log.c.194) server started 
+2016-03-22 08:48:52: (server.c.1053) WARNING: unknown config-key: themis-auth.username (ignored) 
+2016-03-22 08:48:52: (server.c.1053) WARNING: unknown config-key: themis-auth.password (ignored) 
+2016-03-22 08:49:44: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 08:49:44: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 08:50:05: (log.c.194) server started 
+2016-03-22 08:50:05: (server.c.1053) WARNING: unknown config-key: themis-auth.username (ignored) 
+2016-03-22 08:50:05: (server.c.1053) WARNING: unknown config-key: themis-auth.password (ignored) 
+2016-03-22 08:50:10: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 08:50:10: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 08:54:09: (log.c.194) server started 
+2016-03-22 08:55:36: (log.c.194) server started 
+2016-03-22 08:56:06: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 08:56:06: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 08:58:43: (log.c.194) server started 
+2016-03-22 09:18:45: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 09:18:45: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 09:19:40: (log.c.194) server started 
+2016-03-22 09:22:00: (log.c.194) server started 
+2016-03-22 09:22:43: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 09:22:43: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 09:22:50: (log.c.194) server started 
+2016-03-22 09:22:53: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 09:22:53: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 09:22:59: (log.c.194) server started 
+2016-03-22 09:28:49: (log.c.194) server started 
+2016-03-22 09:30:25: (log.c.194) server started 
+2016-03-22 09:31:52: (log.c.194) server started 
+2016-03-22 09:32:47: (log.c.194) server started 
+2016-03-22 09:33:26: (log.c.194) server started 
+2016-03-22 09:37:40: (log.c.194) server started 
+2016-03-22 09:42:00: (log.c.194) server started 
+2016-03-22 09:45:54: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 09:45:54: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 09:46:06: (log.c.194) server started 
+2016-03-22 09:49:36: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 09:49:36: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 10:01:47: (log.c.194) server started 
+2016-03-22 10:03:26: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 10:03:26: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 10:16:47: (log.c.194) server started 
+2016-03-22 10:17:16: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 10:17:16: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 10:17:53: (log.c.194) server started 
+2016-03-22 10:18:01: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 10:18:01: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 10:19:51: (log.c.194) server started 
+2016-03-22 10:19:52: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 10:19:52: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 10:21:36: (log.c.194) server started 
+2016-03-22 10:21:42: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 10:21:42: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 10:31:51: (log.c.194) server started 
+2016-03-22 10:43:32: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 10:43:32: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 10:43:54: (log.c.194) server started 
+2016-03-22 10:49:01: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 10:49:01: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 10:50:51: (log.c.194) server started 
+2016-03-22 10:53:18: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 10:53:18: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 10:55:14: (log.c.194) server started 
+2016-03-22 10:56:18: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 10:56:18: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 11:02:09: (log.c.194) server started 
+2016-03-22 11:04:01: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 11:04:01: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 11:05:46: (log.c.194) server started 
+2016-03-22 11:06:04: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 11:06:04: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 11:06:42: (log.c.194) server started 
+2016-03-22 11:07:01: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 11:07:01: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 11:11:21: (log.c.194) server started 
+2016-03-22 11:11:38: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 11:11:38: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 11:13:26: (log.c.194) server started 
+2016-03-22 11:14:20: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 11:14:20: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 11:14:23: (log.c.194) server started 
+2016-03-22 11:18:16: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 11:18:16: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 11:18:17: (log.c.194) server started 
+2016-03-22 11:18:33: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 11:18:33: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 11:45:33: (log.c.194) server started 
+2016-03-22 11:46:25: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 11:46:25: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 11:46:26: (log.c.194) server started 
+2016-03-22 11:50:31: (log.c.194) server started 
+2016-03-22 11:53:06: (log.c.194) server started 
+2016-03-22 11:54:05: (log.c.194) server started 
+2016-03-22 11:55:08: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 11:55:08: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 11:55:17: (log.c.194) server started 
+2016-03-22 11:56:12: (log.c.194) server started 
+2016-03-22 12:37:39: (log.c.194) server started 
+2016-03-22 12:38:35: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 12:38:35: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 12:38:49: (log.c.194) server started 
+2016-03-22 12:43:00: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 12:43:00: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 12:43:20: (log.c.194) server started 
+2016-03-22 12:47:27: (log.c.194) server started 
+2016-03-22 12:49:52: (log.c.194) server started 
+2016-03-22 15:00:39: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 15:00:39: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 15:01:09: (log.c.194) server started 
+2016-03-22 15:01:45: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 15:01:45: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 16:16:46: (log.c.194) server started 
+2016-03-22 16:17:23: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 16:17:23: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 16:17:48: (log.c.194) server started 
+2016-03-22 16:18:05: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 16:18:05: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 16:19:11: (log.c.194) server started 
+2016-03-22 16:19:34: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 16:19:34: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 16:20:07: (log.c.194) server started 
+2016-03-22 16:21:03: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 16:21:03: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 16:22:11: (log.c.194) server started 
+2016-03-22 16:22:50: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 16:22:50: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 16:24:36: (log.c.194) server started 
+2016-03-22 16:24:41: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 16:24:41: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 16:25:15: (log.c.194) server started 
+2016-03-22 16:25:15: (mod_auth.c.511) method has to be either "basic", "digest" or "extern" in auth.require = ( "..." => ( ..., "method" => "...") ) 
+2016-03-22 16:25:15: (server.c.1030) Configuration of plugins failed. Going down. 
+2016-03-22 16:26:28: (log.c.194) server started 
+2016-03-22 16:26:49: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 16:26:49: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 16:27:02: (log.c.194) server started 
+2016-03-22 16:31:24: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 16:31:24: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 16:32:42: (log.c.194) server started 
+2016-03-22 16:33:14: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 16:33:14: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 16:33:26: (log.c.194) server started 
+2016-03-22 16:34:59: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 16:34:59: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 16:35:09: (log.c.194) server started 
+2016-03-22 16:48:56: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 16:48:56: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 16:48:58: (log.c.194) server started 
+2016-03-22 16:53:19: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 16:53:19: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 16:54:23: (log.c.194) server started 
+2016-03-22 16:54:41: (http_auth.c.1060) digest: auth failed for  andrey : wrong password, IP: 127.0.0.1 
+2016-03-22 16:59:45: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 16:59:45: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 17:00:02: (log.c.194) server started 
+2016-03-22 17:00:14: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 17:00:14: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 21:07:40: (log.c.194) server started 
+2016-03-22 21:07:40: (server.c.1053) WARNING: unknown config-key: spake2-auth.loglevel (ignored) 
+2016-03-22 21:07:40: (server.c.1053) WARNING: unknown config-key: spake2-auth.enable (ignored) 
+2016-03-22 21:07:40: (server.c.1053) WARNING: unknown config-key: spake2-auth.username (ignored) 
+2016-03-22 21:07:40: (server.c.1053) WARNING: unknown config-key: spake2-auth.password (ignored) 
+2016-03-22 21:08:15: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 21:08:15: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-22 22:06:30: (log.c.194) server started 
+2016-03-22 22:10:11: (server.c.1456) [note] graceful shutdown started 
+2016-03-22 22:10:11: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 05:29:46: (log.c.194) server started 
+2016-03-23 05:31:47: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 05:31:47: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 05:32:05: (log.c.194) server started 
+2016-03-23 05:34:03: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 05:34:03: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 05:35:10: (log.c.194) server started 
+2016-03-23 05:35:52: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 05:35:52: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 05:38:57: (log.c.194) server started 
+2016-03-23 05:39:13: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 05:39:13: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 05:40:20: (log.c.194) server started 
+2016-03-23 05:40:32: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 05:40:32: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 05:41:14: (log.c.194) server started 
+2016-03-23 05:42:56: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 05:42:56: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 05:43:47: (log.c.194) server started 
+2016-03-23 05:44:02: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 05:44:02: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 05:46:15: (log.c.194) server started 
+2016-03-23 05:50:24: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 05:50:24: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 05:50:37: (log.c.194) server started 
+2016-03-23 05:51:14: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 05:51:14: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 05:51:19: (log.c.194) server started 
+2016-03-23 05:51:21: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 05:51:21: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 05:51:29: (log.c.194) server started 
+2016-03-23 05:51:53: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 05:51:53: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 05:53:56: (log.c.194) server started 
+2016-03-23 05:54:35: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 05:54:35: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 05:55:24: (log.c.194) server started 
+2016-03-23 05:55:35: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 05:55:37: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 05:56:15: (log.c.194) server started 
+2016-03-23 05:59:02: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 05:59:02: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:00:18: (log.c.194) server started 
+2016-03-23 06:00:47: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:00:47: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:02:14: (log.c.194) server started 
+2016-03-23 06:02:26: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:02:26: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:06:10: (log.c.194) server started 
+2016-03-23 06:06:24: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:06:24: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:14:16: (log.c.194) server started 
+2016-03-23 06:14:27: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:14:27: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:14:53: (log.c.194) server started 
+2016-03-23 06:15:08: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:15:08: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:15:46: (log.c.194) server started 
+2016-03-23 06:16:26: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:16:26: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:16:42: (log.c.194) server started 
+2016-03-23 06:17:16: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:17:16: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:20:12: (log.c.194) server started 
+2016-03-23 06:21:24: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:21:24: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:21:34: (log.c.194) server started 
+2016-03-23 06:21:48: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:21:48: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:22:56: (log.c.194) server started 
+2016-03-23 06:26:01: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:26:01: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:26:40: (log.c.194) server started 
+2016-03-23 06:29:53: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:29:53: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:32:01: (log.c.194) server started 
+2016-03-23 06:35:46: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:35:46: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:36:58: (log.c.194) server started 
+2016-03-23 06:37:11: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:37:11: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:49:08: (log.c.194) server started 
+2016-03-23 06:49:42: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:49:42: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:53:09: (log.c.194) server started 
+2016-03-23 06:53:24: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:53:24: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:54:01: (log.c.194) server started 
+2016-03-23 06:55:05: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:55:05: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:57:14: (log.c.194) server started 
+2016-03-23 06:57:36: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 06:57:36: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 06:59:53: (log.c.194) server started 
+2016-03-23 07:00:09: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 07:00:09: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 07:00:27: (log.c.194) server started 
+2016-03-23 07:01:33: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 07:01:33: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 07:03:29: (log.c.194) server started 
+2016-03-23 07:04:55: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 07:04:55: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 07:05:56: (log.c.194) server started 
+2016-03-23 07:06:12: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 07:06:12: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 07:07:03: (log.c.194) server started 
+2016-03-23 07:09:41: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 07:09:41: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 07:27:34: (log.c.194) server started 
+2016-03-23 07:28:09: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 07:28:09: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 07:28:15: (log.c.194) server started 
+2016-03-23 07:28:17: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 07:28:17: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 07:28:25: (log.c.194) server started 
+2016-03-23 07:30:56: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 07:30:56: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 07:37:56: (log.c.194) server started 
+2016-03-23 07:38:11: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 07:38:11: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 07:38:43: (log.c.194) server started 
+2016-03-23 07:38:57: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 07:38:57: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 07:39:26: (log.c.194) server started 
+2016-03-23 07:39:54: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 07:39:54: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 07:40:12: (log.c.194) server started 
+2016-03-23 07:42:23: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 07:42:23: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 07:42:35: (log.c.194) server started 
+2016-03-23 07:43:30: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 07:43:30: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 07:44:07: (log.c.194) server started 
+2016-03-23 07:45:13: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 07:45:13: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 07:57:04: (log.c.194) server started 
+2016-03-23 08:00:44: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 08:00:44: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 08:01:12: (log.c.194) server started 
+2016-03-23 08:03:50: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 08:03:50: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 08:04:16: (log.c.194) server started 
+2016-03-23 08:05:50: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 08:05:50: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 08:06:11: (log.c.194) server started 
+2016-03-23 08:06:43: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 08:06:43: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 08:13:30: (log.c.194) server started 
+2016-03-23 08:14:14: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 08:14:14: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 08:15:11: (log.c.194) server started 
+2016-03-23 08:32:25: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 08:32:25: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 09:07:19: (log.c.194) server started 
+2016-03-23 09:07:21: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 09:07:21: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 09:08:47: (log.c.194) server started 
+2016-03-23 09:09:18: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 09:09:18: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 09:09:33: (log.c.194) server started 
+2016-03-23 09:17:07: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 09:17:07: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 09:17:38: (log.c.194) server started 
+2016-03-23 09:17:52: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 09:17:52: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 09:17:53: (log.c.194) server started 
+2016-03-23 09:18:17: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 09:18:17: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 09:18:17: (log.c.194) server started 
+2016-03-23 09:28:17: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 09:28:17: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 09:28:25: (log.c.194) server started 
+2016-03-23 09:28:38: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 09:28:38: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 09:28:42: (log.c.194) server started 
+2016-03-23 10:02:46: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 10:02:46: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 10:37:59: (log.c.194) server started 
+2016-03-23 10:39:03: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 10:39:03: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 10:39:08: (log.c.194) server started 
+2016-03-23 11:06:02: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 11:06:02: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 11:06:20: (log.c.194) server started 
+2016-03-23 11:07:17: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 11:07:17: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 11:08:00: (log.c.194) server started 
+2016-03-23 11:08:03: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 11:08:03: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 11:08:58: (log.c.194) server started 
+2016-03-23 11:09:11: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 11:09:11: (server.c.1572) server stopped by UID = 0 PID = 0 
+2016-03-23 11:09:20: (log.c.194) server started 
+2016-03-23 11:10:26: (server.c.1456) [note] graceful shutdown started 
+2016-03-23 11:10:26: (server.c.1572) server stopped by UID = 0 PID = 0 

@@ -1,0 +1,33 @@
+authetication repeats 1000 times
+
+http_auth:
+    in: 302.113 bytes avg
+    out: 861 bytes avg
+    time: 9.6445e-05 sec avg
+
+spake2_auth:
+    in: 387 bytes avg
+    out: 899 bytes avg
+    time: 0.00192651 sec avg
+
+themis_sc_auth:
+    in: 984 bytes avg
+    out: 1011 bytes avg
+    time: 0.0431482 sec avg
+
+authetication repeats 100 times
+
+http_auth:
+    in: 522 bytes avg
+    out: 861 bytes avg
+    time: 0.00010129 sec avg
+
+spake2_auth:
+    in: 387 bytes avg
+    out: 899 bytes avg
+    time: 0.00214673 sec avg
+
+themis_sc_auth:
+    in: 984 bytes avg
+    out: 1011 bytes avg
+    time: 0.0438822 sec avg

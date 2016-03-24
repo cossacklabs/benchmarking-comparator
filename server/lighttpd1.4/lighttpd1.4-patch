@@ -1,0 +1,48 @@
+diff --git a/.gitignore b/.gitignore
+index 95fcde6..f06cbb7 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -16,3 +16,8 @@ missing
+ .sconf_temp
+ .sconsign.dblite
+ config.log
++**/**.o
++**/**.lo
++**/**.la
++**/**.so
++build/**
+diff --git a/src/connections.c b/src/connections.c
+index f33fcd6..98a1a9b 100644
+--- a/src/connections.c
++++ b/src/connections.c
+@@ -857,18 +857,18 @@ int connection_reset(server *srv, connection *con) {
+ 	chunkqueue_reset(con->request_content_queue);
+ 
+ 	/* the plugins should cleanup themself */
+-	for (i = 0; i < srv->plugins.used; i++) {
+-		plugin *p = ((plugin **)(srv->plugins.ptr))[i];
+-		plugin_data *pd = p->data;
+-
+-		if (!pd) continue;
+-
+-		if (con->plugin_ctx[pd->id] != NULL) {
+-			log_error_write(srv, __FILE__, __LINE__, "sb", "missing cleanup in", p->name);
+-		}
+-
+-		con->plugin_ctx[pd->id] = NULL;
+-	}
++//	for (i = 0; i < srv->plugins.used; i++) {
++//		plugin *p = ((plugin **)(srv->plugins.ptr))[i];
++//		plugin_data *pd = p->data;
++//
++//		if (!pd) continue;
++//
++//		if (con->plugin_ctx[pd->id] != NULL) {
++//			log_error_write(srv, __FILE__, __LINE__, "sb", "missing cleanup in", p->name);
++//		}
++//
++//		con->plugin_ctx[pd->id] = NULL;
++//	}
+ 
+ 	/* The cond_cache gets reset in response.c */
+ 	/* config_cond_cache_reset(srv, con); */
