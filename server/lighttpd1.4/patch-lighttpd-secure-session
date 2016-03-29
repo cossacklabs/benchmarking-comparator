@@ -1,0 +1,329 @@
+diff --git a/doc/config/lighttpd.conf b/doc/config/lighttpd.conf
+index 68cfea9..193b035 100644
+--- a/doc/config/lighttpd.conf
++++ b/doc/config/lighttpd.conf
+@@ -15,7 +15,7 @@
+ ##
+ var.log_root    = "/var/log/lighttpd"
+ var.server_root = "/srv/www"
+-var.state_dir   = "/var/run"
++var.state_dir   = "."
+ var.home_dir    = "/var/lib/lighttpd"
+ var.conf_dir    = "/etc/lighttpd"
+ 
+@@ -85,12 +85,12 @@ include "modules.conf"
+ ##  Basic Configuration
+ ## ---------------------
+ ##
+-server.port = 80
++server.port = 8080
+ 
+ ##
+ ## Use IPv6?
+ ##
+-server.use-ipv6 = "enable"
++server.use-ipv6 = "disable"
+ 
+ ##
+ ## bind to a specific IP
+@@ -101,8 +101,8 @@ server.use-ipv6 = "enable"
+ ## Run as a different username/groupname.
+ ## This requires root permissions during startup. 
+ ##
+-server.username  = "lighttpd"
+-server.groupname = "lighttpd"
++server.username  = "andrey"
++server.groupname = "andrey"
+ 
+ ## 
+ ## enable core files.
+diff --git a/doc/config/modules.conf b/doc/config/modules.conf
+index 99a3c3f..db24cf4 100644
+--- a/doc/config/modules.conf
++++ b/doc/config/modules.conf
+@@ -48,6 +48,7 @@ server.modules = (
+ #  "mod_rewrite",
+ #  "mod_setenv",
+ #  "mod_usertrack",
++  "mod_themis_auth"
+ )
+ 
+ ##
+diff --git a/src/base64.c b/src/base64.c
+index 79045e0..6e820df 100644
+--- a/src/base64.c
++++ b/src/base64.c
+@@ -142,7 +142,7 @@ size_t li_to_base64_no_padding(char* out, size_t out_length, const unsigned char
+ 	/* check overflows */
+ 	force_assert(full_tuples < 2*full_tuples);
+ 	force_assert(full_tuples < 4*full_tuples);
+-	force_assert(4*full_tuples < 4*full_tuples + out_tuple_remainder);
++	force_assert(4*full_tuples <= 4*full_tuples + out_tuple_remainder);
+ 	force_assert(require_space <= out_length);
+ 
+ 	for (i = 2; i < in_length; i += 3) {
+diff --git a/src/connections.c b/src/connections.c
+index 8ecd938..f48e14e 100644
+--- a/src/connections.c
++++ b/src/connections.c
+@@ -34,7 +34,7 @@
+ # include <sys/filio.h>
+ #endif
+ 
+-#include "sys-socket.h"
++#include "themis_socket.h"
+ 
+ typedef struct {
+ 	        PLUGIN_DATA;
+@@ -135,7 +135,7 @@ int connection_close(server *srv, connection *con) {
+ 				"(warning) close:", con->fd, strerror(errno));
+ 	}
+ #else
+-	if (close(con->fd)) {
++	if (themis_close(con->fd)) {
+ 		log_error_write(srv, __FILE__, __LINE__, "sds",
+ 				"(warning) close:", con->fd, strerror(errno));
+ 	}
+@@ -335,7 +335,7 @@ static int connection_handle_read(server *srv, connection *con) {
+ #if defined(__WIN32)
+ 	chunkqueue_get_memory(con->read_queue, &mem, &mem_len, 0, 4096);
+ 
+-	len = recv(con->fd, mem, mem_len, 0);
++	len = themis_recv(con->fd, mem, mem_len, 0);
+ #else /* __WIN32 */
+ 	if (ioctl(con->fd, FIONREAD, &toread) || toread == 0 || toread <= 4*1024) {
+ 		toread = 4096;
+@@ -854,18 +854,18 @@ int connection_reset(server *srv, connection *con) {
+ 	chunkqueue_reset(con->request_content_queue);
+ 
+ 	/* the plugins should cleanup themself */
+-	for (i = 0; i < srv->plugins.used; i++) {
+-		plugin *p = ((plugin **)(srv->plugins.ptr))[i];
+-		plugin_data *pd = p->data;
+-
+-		if (!pd) continue;
+-
+-		if (con->plugin_ctx[pd->id] != NULL) {
+-			log_error_write(srv, __FILE__, __LINE__, "sb", "missing cleanup in", p->name);
+-		}
+-
+-		con->plugin_ctx[pd->id] = NULL;
+-	}
++//	for (i = 0; i < srv->plugins.used; i++) {
++//		plugin *p = ((plugin **)(srv->plugins.ptr))[i];
++//		plugin_data *pd = p->data;
++//
++//		if (!pd) continue;
++//
++//		if (con->plugin_ctx[pd->id] != NULL) {
++//			log_error_write(srv, __FILE__, __LINE__, "sb", "missing cleanup in", p->name);
++//		}
++//
++//		con->plugin_ctx[pd->id] = NULL;
++//	}
+ 
+ 	/* The cond_cache gets reset in response.c */
+ 	/* config_cond_cache_reset(srv, con); */
+@@ -1134,7 +1134,7 @@ connection *connection_accept(server *srv, server_socket *srv_socket) {
+ 
+ 	cnt_len = sizeof(cnt_addr);
+ 
+-	if (-1 == (cnt = accept(srv_socket->fd, (struct sockaddr *) &cnt_addr, &cnt_len))) {
++	if (-1 == (cnt = themis_accept(srv_socket->fd, (struct sockaddr *) &cnt_addr, &cnt_len))) {
+ 		switch (errno) {
+ 		case EAGAIN:
+ #if EWOULDBLOCK != EAGAIN
+@@ -1417,7 +1417,7 @@ int connection_state_machine(server *srv, connection *con) {
+ 					}
+ 				}
+ #endif
+-				if ((0 == shutdown(con->fd, SHUT_WR))) {
++				if ((0 == themis_shutdown(con->fd, SHUT_WR))) {
+ 					con->close_timeout_ts = srv->cur_ts;
+ 					connection_set_state(srv, con, CON_STATE_CLOSE);
+ 				} else {
+@@ -1587,7 +1587,7 @@ int connection_state_machine(server *srv, connection *con) {
+ 			connection_reset(srv, con);
+ 
+ 			/* close the connection */
+-			if ((0 == shutdown(con->fd, SHUT_WR))) {
++			if ((0 == themis_shutdown(con->fd, SHUT_WR))) {
+ 				con->close_timeout_ts = srv->cur_ts;
+ 				connection_set_state(srv, con, CON_STATE_CLOSE);
+ 
+diff --git a/src/http-header-glue.c b/src/http-header-glue.c
+index c0501f5..1ce828b 100644
+--- a/src/http-header-glue.c
++++ b/src/http-header-glue.c
+@@ -138,7 +138,7 @@ int http_response_redirect_to_directory(server *srv, connection *con) {
+ 
+ 		our_addr_len = sizeof(our_addr);
+ 
+-		if (-1 == getsockname(con->fd, &(our_addr.plain), &our_addr_len)) {
++		if (-1 == themis_getsockname(con->fd, &(our_addr.plain), &our_addr_len)) {
+ 			con->http_status = 500;
+ 
+ 			log_error_write(srv, __FILE__, __LINE__, "ss",
+diff --git a/src/mod_auth.c b/src/mod_auth.c
+index 5b07e52..5c76b32 100644
+--- a/src/mod_auth.c
++++ b/src/mod_auth.c
+@@ -178,6 +178,7 @@ static int mod_auth_patch_connection(server *srv, connection *con, mod_auth_plug
+ #undef PATCH
+ 
+ static handler_t mod_auth_uri_handler(server *srv, connection *con, void *p_d) {
++	clock_t start=clock();
+ 	size_t k;
+ 	int auth_required = 0, auth_satisfied = 0;
+ 	char *http_authorization = NULL;
+@@ -271,7 +272,7 @@ static handler_t mod_auth_uri_handler(server *srv, connection *con, void *p_d) {
+ 					if (-1 == (auth_satisfied = http_auth_digest_check(srv, con, p, req, auth_realm+1))) {
+ 						con->http_status = 400;
+ 						con->mode = DIRECT;
+-
++					        fprintf(stderr, "http_auth: %f\n", (float)(clock()-start)/CLOCKS_PER_SEC);
+ 						/* a field was missing */
+ 
+ 						return HANDLER_FINISHED;
+@@ -313,6 +314,8 @@ static handler_t mod_auth_uri_handler(server *srv, connection *con, void *p_d) {
+ 		} else {
+ 			/* evil */
+ 		}
++	        fprintf(stderr, "http_auth: %f\n", (float)(clock()-start)/CLOCKS_PER_SEC);
++
+ 		return HANDLER_FINISHED;
+ 	} else {
+ 		/* the REMOTE_USER header */
+@@ -337,7 +340,7 @@ static handler_t mod_auth_uri_handler(server *srv, connection *con, void *p_d) {
+ 		}
+ 		buffer_copy_string(ds->value, auth_type);
+ 	}
+-
++        fprintf(stderr, "http_auth: %f\n", (float)(clock()-start)/CLOCKS_PER_SEC);
+ 	return HANDLER_GO_ON;
+ }
+ 
+diff --git a/src/network.c b/src/network.c
+index 846e549..8165e46 100644
+--- a/src/network.c
++++ b/src/network.c
+@@ -8,7 +8,7 @@
+ 
+ #include "network_backends.h"
+ #include "sys-mmap.h"
+-#include "sys-socket.h"
++#include "themis_socket.h"
+ 
+ #include <sys/types.h>
+ #include <sys/stat.h>
+@@ -232,7 +232,7 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ 
+ 		srv_socket->addr.plain.sa_family = AF_UNIX;
+ 
+-		if (-1 == (srv_socket->fd = socket(srv_socket->addr.plain.sa_family, SOCK_STREAM, 0))) {
++		if (-1 == (srv_socket->fd = themis_socket(srv_socket->addr.plain.sa_family, SOCK_STREAM, 0))) {
+ 			log_error_write(srv, __FILE__, __LINE__, "ss", "socket failed:", strerror(errno));
+ 			goto error_free_socket;
+ 		}
+@@ -247,7 +247,7 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ 	if (s->use_ipv6) {
+ 		srv_socket->addr.plain.sa_family = AF_INET6;
+ 
+-		if (-1 == (srv_socket->fd = socket(srv_socket->addr.plain.sa_family, SOCK_STREAM, IPPROTO_TCP))) {
++		if (-1 == (srv_socket->fd = themis_socket(srv_socket->addr.plain.sa_family, SOCK_STREAM, IPPROTO_TCP))) {
+ 			log_error_write(srv, __FILE__, __LINE__, "ss", "socket failed:", strerror(errno));
+ 			goto error_free_socket;
+ 		}
+@@ -256,7 +256,7 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ 
+ 	if (srv_socket->fd == -1) {
+ 		srv_socket->addr.plain.sa_family = AF_INET;
+-		if (-1 == (srv_socket->fd = socket(srv_socket->addr.plain.sa_family, SOCK_STREAM, IPPROTO_TCP))) {
++		if (-1 == (srv_socket->fd = themis_socket(srv_socket->addr.plain.sa_family, SOCK_STREAM, IPPROTO_TCP))) {
+ 			log_error_write(srv, __FILE__, __LINE__, "ss", "socket failed:", strerror(errno));
+ 			goto error_free_socket;
+ 		}
+@@ -288,7 +288,7 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ 
+ 			if (s->set_v6only) {
+ 				val = 1;
+-				if (-1 == setsockopt(srv_socket->fd, IPPROTO_IPV6, IPV6_V6ONLY, &val, sizeof(val))) {
++				if (-1 == themis_setsockopt(srv_socket->fd, IPPROTO_IPV6, IPV6_V6ONLY, &val, sizeof(val))) {
+ 					log_error_write(srv, __FILE__, __LINE__, "ss", "socketsockopt(IPV6_V6ONLY) failed:", strerror(errno));
+ 					goto error_free_socket;
+ 				}
+@@ -369,7 +369,7 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ 		}
+ 
+ 		/* check if the socket exists and try to connect to it. */
+-		if (-1 != (fd = connect(srv_socket->fd, (struct sockaddr *) &(srv_socket->addr), addr_len))) {
++		if (-1 != (fd = themis_connect(srv_socket->fd, (struct sockaddr *) &(srv_socket->addr), addr_len))) {
+ 			close(fd);
+ 
+ 			log_error_write(srv, __FILE__, __LINE__, "ss",
+@@ -400,7 +400,7 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ 		goto error_free_socket;
+ 	}
+ 
+-	if (0 != bind(srv_socket->fd, (struct sockaddr *) &(srv_socket->addr), addr_len)) {
++	if (0 != themis_bind(srv_socket->fd, (struct sockaddr *) &(srv_socket->addr), addr_len)) {
+ 		switch(srv_socket->addr.plain.sa_family) {
+ 		case AF_UNIX:
+ 			log_error_write(srv, __FILE__, __LINE__, "sds",
+@@ -416,7 +416,7 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ 		goto error_free_socket;
+ 	}
+ 
+-	if (-1 == listen(srv_socket->fd, 128 * 8)) {
++	if (-1 == themis_listen(srv_socket->fd, 128 * 8)) {
+ 		log_error_write(srv, __FILE__, __LINE__, "ss", "listen failed: ", strerror(errno));
+ 		goto error_free_socket;
+ 	}
+@@ -437,7 +437,7 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ #ifdef TCP_DEFER_ACCEPT
+ 	} else if (s->defer_accept) {
+ 		int v = s->defer_accept;
+-		if (-1 == setsockopt(srv_socket->fd, IPPROTO_TCP, TCP_DEFER_ACCEPT, &v, sizeof(v))) {
++		if (-1 == themis_setsockopt(srv_socket->fd, IPPROTO_TCP, TCP_DEFER_ACCEPT, &v, sizeof(v))) {
+ 			log_error_write(srv, __FILE__, __LINE__, "ss", "can't set TCP_DEFER_ACCEPT: ", strerror(errno));
+ 		}
+ #endif
+diff --git a/src/network_write.c b/src/network_write.c
+index 2c61cf7..bff64bc 100644
+--- a/src/network_write.c
++++ b/src/network_write.c
+@@ -29,7 +29,7 @@ int network_write_mem_chunk(server *srv, connection *con, int fd, chunkqueue *cq
+ 	}
+ 
+ #if defined(__WIN32)
+-	if ((r = send(fd, c->mem->ptr + c->offset, c_len, 0)) < 0) {
++	if ((r = themis_send(fd, c->mem->ptr + c->offset, c_len, 0)) < 0) {
+ 		int lastError = WSAGetLastError();
+ 		switch (lastError) {
+ 		case WSAEINTR:
+diff --git a/src/network_write_mmap.c b/src/network_write_mmap.c
+index 445ea39..4d2f85f 100644
+--- a/src/network_write_mmap.c
++++ b/src/network_write_mmap.c
+@@ -157,7 +157,7 @@ int network_write_file_chunk_mmap(server *srv, connection *con, int fd, chunkque
+ 
+ 	sigbus_jmp_valid = 1;
+ #if defined(__WIN32)
+-	r = send(fd, data, toSend, 0);
++	r = themis_send(fd, data, toSend, 0);
+ #else /* __WIN32 */
+ 	r = write(fd, data, toSend);
+ #endif /* __WIN32 */
+diff --git a/src/network_write_no_mmap.c b/src/network_write_no_mmap.c
+index f5f50ce..e0df860 100644
+--- a/src/network_write_no_mmap.c
++++ b/src/network_write_no_mmap.c
+@@ -93,7 +93,7 @@ int network_write_file_chunk_no_mmap(server *srv, connection *con, int fd, chunk
+ 	}
+ 
+ #if defined(__WIN32)
+-	if ((r = send(fd, srv->tmp_buf->ptr, toSend, 0)) < 0) {
++	if ((r = themis_send(fd, srv->tmp_buf->ptr, toSend, 0)) < 0) {
+ 		int lastError = WSAGetLastError();
+ 		switch (lastError) {
+ 		case WSAEINTR:
