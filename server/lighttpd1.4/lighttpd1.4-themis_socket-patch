@@ -1,0 +1,857 @@
+diff --git a/src/connections.c b/src/connections.c
+index 8ecd938..d293b3a 100644
+--- a/src/connections.c
++++ b/src/connections.c
+@@ -34,7 +34,7 @@
+ # include <sys/filio.h>
+ #endif
+ 
+-#include "sys-socket.h"
++#include "themis_socket.h"
+ 
+ typedef struct {
+ 	        PLUGIN_DATA;
+@@ -127,15 +127,15 @@ int connection_close(server *srv, connection *con) {
+ 	}
+ #endif
+ 
+-	fdevent_event_del(srv->ev, &(con->fde_ndx), con->fd);
+-	fdevent_unregister(srv->ev, con->fd);
++	fdevent_event_del(srv->ev, &(con->fde_ndx), ((themis_socket_t*)(con->fd))->socket);
++	fdevent_unregister(srv->ev, ((themis_socket_t*)(con->fd))->socket);
+ #ifdef __WIN32
+ 	if (closesocket(con->fd)) {
+ 		log_error_write(srv, __FILE__, __LINE__, "sds",
+ 				"(warning) close:", con->fd, strerror(errno));
+ 	}
+ #else
+-	if (close(con->fd)) {
++	if (themis_close(con->fd)) {
+ 		log_error_write(srv, __FILE__, __LINE__, "sds",
+ 				"(warning) close:", con->fd, strerror(errno));
+ 	}
+@@ -335,17 +335,16 @@ static int connection_handle_read(server *srv, connection *con) {
+ #if defined(__WIN32)
+ 	chunkqueue_get_memory(con->read_queue, &mem, &mem_len, 0, 4096);
+ 
+-	len = recv(con->fd, mem, mem_len, 0);
++	len = themis_recv(con->fd, mem, mem_len, 0);
+ #else /* __WIN32 */
+-	if (ioctl(con->fd, FIONREAD, &toread) || toread == 0 || toread <= 4*1024) {
++	if (ioctl(((themis_socket_t*)(con->fd))->socket, FIONREAD, &toread) || toread == 0 || toread <= 4*1024) {
+ 		toread = 4096;
+ 	}
+ 	else if (toread > MAX_READ_LIMIT) {
+ 		toread = MAX_READ_LIMIT;
+ 	}
+ 	chunkqueue_get_memory(con->read_queue, &mem, &mem_len, 0, toread);
+-
+-	len = read(con->fd, mem, mem_len);
++	len = themis_read(con->fd, mem, mem_len);
+ #endif /* __WIN32 */
+ 
+ 	chunkqueue_use_memory(con->read_queue, len > 0 ? len : 0);
+@@ -854,18 +853,18 @@ int connection_reset(server *srv, connection *con) {
+ 	chunkqueue_reset(con->request_content_queue);
+ 
+ 	/* the plugins should cleanup themself */
+-	for (i = 0; i < srv->plugins.used; i++) {
+-		plugin *p = ((plugin **)(srv->plugins.ptr))[i];
+-		plugin_data *pd = p->data;
+-
+-		if (!pd) continue;
+-
+-		if (con->plugin_ctx[pd->id] != NULL) {
+-			log_error_write(srv, __FILE__, __LINE__, "sb", "missing cleanup in", p->name);
+-		}
+-
+-		con->plugin_ctx[pd->id] = NULL;
+-	}
++//	for (i = 0; i < srv->plugins.used; i++) {
++//		plugin *p = ((plugin **)(srv->plugins.ptr))[i];
++//		plugin_data *pd = p->data;
++//
++//		if (!pd) continue;
++//
++//		if (con->plugin_ctx[pd->id] != NULL) {
++//			log_error_write(srv, __FILE__, __LINE__, "sb", "missing cleanup in", p->name);
++//		}
++//
++//		con->plugin_ctx[pd->id] = NULL;
++//	}
+ 
+ 	/* The cond_cache gets reset in response.c */
+ 	/* config_cond_cache_reset(srv, con); */
+@@ -1103,7 +1102,7 @@ static handler_t connection_handle_fdevent(server *srv, void *context, int reven
+ 		int len;
+ 		char buf[1024];
+ 
+-		len = read(con->fd, buf, sizeof(buf));
++		len = read(((themis_socket_t*)(con->fd))->socket, buf, sizeof(buf));
+ 		if (len == 0 || (len < 0 && errno != EAGAIN && errno != EINTR) ) {
+ 			con->close_timeout_ts = srv->cur_ts - (HTTP_LINGER_TIMEOUT+1);
+ 		}
+@@ -1133,8 +1132,7 @@ connection *connection_accept(server *srv, server_socket *srv_socket) {
+ 	}
+ 
+ 	cnt_len = sizeof(cnt_addr);
+-
+-	if (-1 == (cnt = accept(srv_socket->fd, (struct sockaddr *) &cnt_addr, &cnt_len))) {
++	if (-1 == (cnt = themis_accept(srv_socket->fd, (struct sockaddr *) &cnt_addr, &cnt_len))) {
+ 		switch (errno) {
+ 		case EAGAIN:
+ #if EWOULDBLOCK != EAGAIN
+@@ -1153,6 +1151,7 @@ connection *connection_accept(server *srv, server_socket *srv_socket) {
+ 		}
+ 		return NULL;
+ 	} else {
++
+ 		connection *con;
+ 
+ 		srv->cur_fds++;
+@@ -1171,7 +1170,7 @@ connection *connection_accept(server *srv, server_socket *srv_socket) {
+ #if 0
+ 		gettimeofday(&(con->start_tv), NULL);
+ #endif
+-		fdevent_register(srv->ev, con->fd, connection_handle_fdevent, con);
++		fdevent_register(srv->ev, ((themis_socket_t*)(con->fd))->socket, connection_handle_fdevent, con);
+ 
+ 		connection_set_state(srv, con, CON_STATE_REQUEST_START);
+ 
+@@ -1180,7 +1179,7 @@ connection *connection_accept(server *srv, server_socket *srv_socket) {
+ 		buffer_copy_string(con->dst_addr_buf, inet_ntop_cache_get_ip(srv, &(con->dst_addr)));
+ 		con->srv_socket = srv_socket;
+ 
+-		if (-1 == (fdevent_fcntl_set(srv->ev, con->fd))) {
++		if (-1 == (fdevent_fcntl_set(srv->ev, ((themis_socket_t*)(con->fd))->socket))) {
+ 			log_error_write(srv, __FILE__, __LINE__, "ss", "fcntl failed: ", strerror(errno));
+ 			return NULL;
+ 		}
+@@ -1417,7 +1416,7 @@ int connection_state_machine(server *srv, connection *con) {
+ 					}
+ 				}
+ #endif
+-				if ((0 == shutdown(con->fd, SHUT_WR))) {
++				if ((0 == themis_shutdown(con->fd, SHUT_WR))) {
+ 					con->close_timeout_ts = srv->cur_ts;
+ 					connection_set_state(srv, con, CON_STATE_CLOSE);
+ 				} else {
+@@ -1456,7 +1455,7 @@ int connection_state_machine(server *srv, connection *con) {
+ 				int len;
+ 				char buf[1024];
+ 
+-				len = read(con->fd, buf, sizeof(buf));
++				len = read(((themis_socket_t*)(con->fd))->socket, buf, sizeof(buf));
+ 				if (len == 0 || (len < 0 && errno != EAGAIN && errno != EINTR) ) {
+ 					con->close_timeout_ts = srv->cur_ts - (HTTP_LINGER_TIMEOUT+1);
+ 				}
+@@ -1587,7 +1586,7 @@ int connection_state_machine(server *srv, connection *con) {
+ 			connection_reset(srv, con);
+ 
+ 			/* close the connection */
+-			if ((0 == shutdown(con->fd, SHUT_WR))) {
++			if ((0 == themis_shutdown(con->fd, SHUT_WR))) {
+ 				con->close_timeout_ts = srv->cur_ts;
+ 				connection_set_state(srv, con, CON_STATE_CLOSE);
+ 
+@@ -1629,7 +1628,7 @@ int connection_state_machine(server *srv, connection *con) {
+ 	case CON_STATE_READ_POST:
+ 	case CON_STATE_READ:
+ 	case CON_STATE_CLOSE:
+-		fdevent_event_set(srv->ev, &(con->fde_ndx), con->fd, FDEVENT_IN);
++		fdevent_event_set(srv->ev, &(con->fde_ndx), ((themis_socket_t*)(con->fd))->socket, FDEVENT_IN);
+ 		break;
+ 	case CON_STATE_WRITE:
+ 		/* request write-fdevent only if we really need it
+@@ -1639,13 +1638,13 @@ int connection_state_machine(server *srv, connection *con) {
+ 		if (!chunkqueue_is_empty(con->write_queue) &&
+ 		    (con->is_writable == 0) &&
+ 		    (con->traffic_limit_reached == 0)) {
+-			fdevent_event_set(srv->ev, &(con->fde_ndx), con->fd, FDEVENT_OUT);
++			fdevent_event_set(srv->ev, &(con->fde_ndx), ((themis_socket_t*)(con->fd))->socket, FDEVENT_OUT);
+ 		} else {
+-			fdevent_event_del(srv->ev, &(con->fde_ndx), con->fd);
++			fdevent_event_del(srv->ev, &(con->fde_ndx), ((themis_socket_t*)(con->fd))->socket);
+ 		}
+ 		break;
+ 	default:
+-		fdevent_event_del(srv->ev, &(con->fde_ndx), con->fd);
++		fdevent_event_del(srv->ev, &(con->fde_ndx), ((themis_socket_t*)(con->fd))->socket);
+ 		break;
+ 	}
+ 
+diff --git a/src/http-header-glue.c b/src/http-header-glue.c
+index c0501f5..1ce828b 100644
+--- a/src/http-header-glue.c
++++ b/src/http-header-glue.c
+@@ -138,7 +138,7 @@ int http_response_redirect_to_directory(server *srv, connection *con) {
+ 
+ 		our_addr_len = sizeof(our_addr);
+ 
+-		if (-1 == getsockname(con->fd, &(our_addr.plain), &our_addr_len)) {
++		if (-1 == themis_getsockname(con->fd, &(our_addr.plain), &our_addr_len)) {
+ 			con->http_status = 500;
+ 
+ 			log_error_write(srv, __FILE__, __LINE__, "ss",
+diff --git a/src/mod_auth.c b/src/mod_auth.c
+index 5b07e52..e216218 100644
+--- a/src/mod_auth.c
++++ b/src/mod_auth.c
+@@ -178,6 +178,7 @@ static int mod_auth_patch_connection(server *srv, connection *con, mod_auth_plug
+ #undef PATCH
+ 
+ static handler_t mod_auth_uri_handler(server *srv, connection *con, void *p_d) {
++	clock_t start=clock();
+ 	size_t k;
+ 	int auth_required = 0, auth_satisfied = 0;
+ 	char *http_authorization = NULL;
+@@ -271,7 +272,6 @@ static handler_t mod_auth_uri_handler(server *srv, connection *con, void *p_d) {
+ 					if (-1 == (auth_satisfied = http_auth_digest_check(srv, con, p, req, auth_realm+1))) {
+ 						con->http_status = 400;
+ 						con->mode = DIRECT;
+-
+ 						/* a field was missing */
+ 
+ 						return HANDLER_FINISHED;
+@@ -313,6 +313,7 @@ static handler_t mod_auth_uri_handler(server *srv, connection *con, void *p_d) {
+ 		} else {
+ 			/* evil */
+ 		}
++
+ 		return HANDLER_FINISHED;
+ 	} else {
+ 		/* the REMOTE_USER header */
+@@ -337,7 +338,6 @@ static handler_t mod_auth_uri_handler(server *srv, connection *con, void *p_d) {
+ 		}
+ 		buffer_copy_string(ds->value, auth_type);
+ 	}
+-
+ 	return HANDLER_GO_ON;
+ }
+ 
+diff --git a/src/network.c b/src/network.c
+index 846e549..52b90c2 100644
+--- a/src/network.c
++++ b/src/network.c
+@@ -8,7 +8,7 @@
+ 
+ #include "network_backends.h"
+ #include "sys-mmap.h"
+-#include "sys-socket.h"
++#include "themis_socket.h"
+ 
+ #include <sys/types.h>
+ #include <sys/stat.h>
+@@ -58,7 +58,7 @@ static handler_t network_server_handle_fdevent(server *srv, void *context, int r
+ 	if (0 == (revents & FDEVENT_IN)) {
+ 		log_error_write(srv, __FILE__, __LINE__, "sdd",
+ 				"strange event for server socket",
+-				srv_socket->fd,
++				((themis_socket_t*)(srv_socket->fd))->socket,
+ 				revents);
+ 		return HANDLER_ERROR;
+ 	}
+@@ -232,7 +232,7 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ 
+ 		srv_socket->addr.plain.sa_family = AF_UNIX;
+ 
+-		if (-1 == (srv_socket->fd = socket(srv_socket->addr.plain.sa_family, SOCK_STREAM, 0))) {
++		if (-1 == (srv_socket->fd = themis_socket(srv_socket->addr.plain.sa_family, SOCK_STREAM, 0))) {
+ 			log_error_write(srv, __FILE__, __LINE__, "ss", "socket failed:", strerror(errno));
+ 			goto error_free_socket;
+ 		}
+@@ -247,7 +247,7 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ 	if (s->use_ipv6) {
+ 		srv_socket->addr.plain.sa_family = AF_INET6;
+ 
+-		if (-1 == (srv_socket->fd = socket(srv_socket->addr.plain.sa_family, SOCK_STREAM, IPPROTO_TCP))) {
++		if (-1 == (srv_socket->fd = themis_socket(srv_socket->addr.plain.sa_family, SOCK_STREAM, IPPROTO_TCP))) {
+ 			log_error_write(srv, __FILE__, __LINE__, "ss", "socket failed:", strerror(errno));
+ 			goto error_free_socket;
+ 		}
+@@ -256,20 +256,20 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ 
+ 	if (srv_socket->fd == -1) {
+ 		srv_socket->addr.plain.sa_family = AF_INET;
+-		if (-1 == (srv_socket->fd = socket(srv_socket->addr.plain.sa_family, SOCK_STREAM, IPPROTO_TCP))) {
++		if (-1 == (srv_socket->fd = themis_socket(srv_socket->addr.plain.sa_family, SOCK_STREAM, IPPROTO_TCP))) {
+ 			log_error_write(srv, __FILE__, __LINE__, "ss", "socket failed:", strerror(errno));
+ 			goto error_free_socket;
+ 		}
+ 	}
+ 
+ 	/* set FD_CLOEXEC now, fdevent_fcntl_set is called later; needed for pipe-logger forks */
+-	fd_close_on_exec(srv_socket->fd);
++	fd_close_on_exec(((themis_socket_t*)(srv_socket->fd))->socket);
+ 
+ 	/* */
+-	srv->cur_fds = srv_socket->fd;
++	srv->cur_fds = ((themis_socket_t*)(srv_socket->fd))->socket;
+ 
+ 	val = 1;
+-	if (setsockopt(srv_socket->fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val)) < 0) {
++	if (themis_setsockopt(srv_socket->fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val)) < 0) {
+ 		log_error_write(srv, __FILE__, __LINE__, "ss", "socketsockopt(SO_REUSEADDR) failed:", strerror(errno));
+ 		goto error_free_socket;
+ 	}
+@@ -288,7 +288,7 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ 
+ 			if (s->set_v6only) {
+ 				val = 1;
+-				if (-1 == setsockopt(srv_socket->fd, IPPROTO_IPV6, IPV6_V6ONLY, &val, sizeof(val))) {
++				if (-1 == themis_setsockopt(srv_socket->fd, IPPROTO_IPV6, IPV6_V6ONLY, &val, sizeof(val))) {
+ 					log_error_write(srv, __FILE__, __LINE__, "ss", "socketsockopt(IPV6_V6ONLY) failed:", strerror(errno));
+ 					goto error_free_socket;
+ 				}
+@@ -369,7 +369,7 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ 		}
+ 
+ 		/* check if the socket exists and try to connect to it. */
+-		if (-1 != (fd = connect(srv_socket->fd, (struct sockaddr *) &(srv_socket->addr), addr_len))) {
++		if (-1 != (fd = themis_connect(srv_socket->fd, (struct sockaddr *) &(srv_socket->addr), addr_len))) {
+ 			close(fd);
+ 
+ 			log_error_write(srv, __FILE__, __LINE__, "ss",
+@@ -400,7 +400,7 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ 		goto error_free_socket;
+ 	}
+ 
+-	if (0 != bind(srv_socket->fd, (struct sockaddr *) &(srv_socket->addr), addr_len)) {
++	if (0 != themis_bind(srv_socket->fd, (struct sockaddr *) &(srv_socket->addr), addr_len)) {
+ 		switch(srv_socket->addr.plain.sa_family) {
+ 		case AF_UNIX:
+ 			log_error_write(srv, __FILE__, __LINE__, "sds",
+@@ -416,7 +416,7 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ 		goto error_free_socket;
+ 	}
+ 
+-	if (-1 == listen(srv_socket->fd, 128 * 8)) {
++	if (-1 == themis_listen(srv_socket->fd, 128 * 8)) {
+ 		log_error_write(srv, __FILE__, __LINE__, "ss", "listen failed: ", strerror(errno));
+ 		goto error_free_socket;
+ 	}
+@@ -437,7 +437,7 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ #ifdef TCP_DEFER_ACCEPT
+ 	} else if (s->defer_accept) {
+ 		int v = s->defer_accept;
+-		if (-1 == setsockopt(srv_socket->fd, IPPROTO_TCP, TCP_DEFER_ACCEPT, &v, sizeof(v))) {
++		if (-1 == themis_setsockopt(srv_socket->fd, IPPROTO_TCP, TCP_DEFER_ACCEPT, &v, sizeof(v))) {
+ 			log_error_write(srv, __FILE__, __LINE__, "ss", "can't set TCP_DEFER_ACCEPT: ", strerror(errno));
+ 		}
+ #endif
+@@ -475,14 +475,14 @@ static int network_server_init(server *srv, buffer *host_token, specific_config
+ 	return 0;
+ 
+ error_free_socket:
+-	if (srv_socket->fd != -1) {
++	if (((themis_socket_t*)(srv_socket->fd))->socket != -1) {
+ 		/* check if server fd are already registered */
+ 		if (srv_socket->fde_ndx != -1) {
+-			fdevent_event_del(srv->ev, &(srv_socket->fde_ndx), srv_socket->fd);
+-			fdevent_unregister(srv->ev, srv_socket->fd);
++			fdevent_event_del(srv->ev, &(srv_socket->fde_ndx), ((themis_socket_t*)(srv_socket->fd))->socket);
++			fdevent_unregister(srv->ev, ((themis_socket_t*)(srv_socket->fd))->socket);
+ 		}
+ 
+-		close(srv_socket->fd);
++		themis_close(srv_socket->fd);
+ 	}
+ 	buffer_free(srv_socket->srv_token);
+ 	free(srv_socket);
+@@ -497,14 +497,14 @@ int network_close(server *srv) {
+ 	for (i = 0; i < srv->srv_sockets.used; i++) {
+ 		server_socket *srv_socket = srv->srv_sockets.ptr[i];
+ 
+-		if (srv_socket->fd != -1) {
++		if (((themis_socket_t*)(srv_socket->fd))->socket != -1) {
+ 			/* check if server fd are already registered */
+ 			if (srv_socket->fde_ndx != -1) {
+-				fdevent_event_del(srv->ev, &(srv_socket->fde_ndx), srv_socket->fd);
+-				fdevent_unregister(srv->ev, srv_socket->fd);
++				fdevent_event_del(srv->ev, &(srv_socket->fde_ndx), ((themis_socket_t*)(srv_socket->fd))->socket);
++				fdevent_unregister(srv->ev, ((themis_socket_t*)(srv_socket->fd))->socket);
+ 			}
+ 
+-			close(srv_socket->fd);
++			close(((themis_socket_t*)(srv_socket->fd))->socket);
+ 		}
+ 
+ 		buffer_free(srv_socket->srv_token);
+@@ -1022,8 +1022,8 @@ int network_register_fdevents(server *srv) {
+ 	for (i = 0; i < srv->srv_sockets.used; i++) {
+ 		server_socket *srv_socket = srv->srv_sockets.ptr[i];
+ 
+-		fdevent_register(srv->ev, srv_socket->fd, network_server_handle_fdevent, srv_socket);
+-		fdevent_event_set(srv->ev, &(srv_socket->fde_ndx), srv_socket->fd, FDEVENT_IN);
++		fdevent_register(srv->ev, ((themis_socket_t*)(srv_socket->fd))->socket, network_server_handle_fdevent, srv_socket);
++		fdevent_event_set(srv->ev, &(srv_socket->fde_ndx), ((themis_socket_t*)(srv_socket->fd))->socket, FDEVENT_IN);
+ 	}
+ 	return 0;
+ }
+@@ -1072,7 +1072,7 @@ int network_write_chunkqueue(server *srv, connection *con, chunkqueue *cq, off_t
+ 	 */
+ 	if (cq->first && cq->first->next) {
+ 		corked = 1;
+-		setsockopt(con->fd, IPPROTO_TCP, TCP_CORK, &corked, sizeof(corked));
++		setsockopt(((themis_socket_t*)(con->fd))->socket, IPPROTO_TCP, TCP_CORK, &corked, sizeof(corked));
+ 	}
+ #endif
+ 
+@@ -1092,7 +1092,7 @@ int network_write_chunkqueue(server *srv, connection *con, chunkqueue *cq, off_t
+ #ifdef TCP_CORK
+ 	if (corked) {
+ 		corked = 0;
+-		setsockopt(con->fd, IPPROTO_TCP, TCP_CORK, &corked, sizeof(corked));
++		setsockopt(((themis_socket_t*)(con->fd))->socket, IPPROTO_TCP, TCP_CORK, &corked, sizeof(corked));
+ 	}
+ #endif
+ 
+diff --git a/src/network_linux_sendfile.c b/src/network_linux_sendfile.c
+index 4e12b2d..be0afa7 100644
+--- a/src/network_linux_sendfile.c
++++ b/src/network_linux_sendfile.c
+@@ -4,7 +4,7 @@
+ 
+ #include "network.h"
+ #include "log.h"
+-
++#include "themis_socket.h"
+ #include <sys/sendfile.h>
+ 
+ #include <errno.h>
+@@ -31,7 +31,7 @@ int network_write_file_chunk_sendfile(server *srv, connection *con, int fd, chun
+ 
+ 	if (0 != network_open_file_chunk(srv, con, cq)) return -1;
+ 
+-	if (-1 == (r = sendfile(fd, c->file.fd, &offset, toSend))) {
++	if (-1 == (r = themis_sendfile(fd, c->file.fd, &offset, toSend))) {
+ 		switch (errno) {
+ 		case EAGAIN:
+ 		case EINTR:
+diff --git a/src/network_write.c b/src/network_write.c
+index 2c61cf7..f3c9f03 100644
+--- a/src/network_write.c
++++ b/src/network_write.c
+@@ -29,7 +29,7 @@ int network_write_mem_chunk(server *srv, connection *con, int fd, chunkqueue *cq
+ 	}
+ 
+ #if defined(__WIN32)
+-	if ((r = send(fd, c->mem->ptr + c->offset, c_len, 0)) < 0) {
++	if ((r = themis_send(fd, c->mem->ptr + c->offset, c_len, 0)) < 0) {
+ 		int lastError = WSAGetLastError();
+ 		switch (lastError) {
+ 		case WSAEINTR:
+@@ -46,6 +46,7 @@ int network_write_mem_chunk(server *srv, connection *con, int fd, chunkqueue *cq
+ 		}
+ 	}
+ #else /* __WIN32 */
++	fprintf("try to send %i bytes\n", c_len);
+ 	if ((r = write(fd, c->mem->ptr + c->offset, c_len)) < 0) {
+ 		switch (errno) {
+ 		case EAGAIN:
+diff --git a/src/network_write_mmap.c b/src/network_write_mmap.c
+index 445ea39..4d2f85f 100644
+--- a/src/network_write_mmap.c
++++ b/src/network_write_mmap.c
+@@ -157,7 +157,7 @@ int network_write_file_chunk_mmap(server *srv, connection *con, int fd, chunkque
+ 
+ 	sigbus_jmp_valid = 1;
+ #if defined(__WIN32)
+-	r = send(fd, data, toSend, 0);
++	r = themis_send(fd, data, toSend, 0);
+ #else /* __WIN32 */
+ 	r = write(fd, data, toSend);
+ #endif /* __WIN32 */
+diff --git a/src/network_write_no_mmap.c b/src/network_write_no_mmap.c
+index f5f50ce..e0df860 100644
+--- a/src/network_write_no_mmap.c
++++ b/src/network_write_no_mmap.c
+@@ -93,7 +93,7 @@ int network_write_file_chunk_no_mmap(server *srv, connection *con, int fd, chunk
+ 	}
+ 
+ #if defined(__WIN32)
+-	if ((r = send(fd, srv->tmp_buf->ptr, toSend, 0)) < 0) {
++	if ((r = themis_send(fd, srv->tmp_buf->ptr, toSend, 0)) < 0) {
+ 		int lastError = WSAGetLastError();
+ 		switch (lastError) {
+ 		case WSAEINTR:
+diff --git a/src/network_writev.c b/src/network_writev.c
+index 121f782..61653c4 100644
+--- a/src/network_writev.c
++++ b/src/network_writev.c
+@@ -13,6 +13,8 @@
+ #include <string.h>
+ #include <stdlib.h>
+ 
++#include "themis_socket.h"
++
+ #if defined(UIO_MAXIOV)
+ # define SYS_MAX_CHUNKS UIO_MAXIOV
+ #elif defined(IOV_MAX)
+@@ -73,7 +75,7 @@ int network_writev_mem_chunks(server *srv, connection *con, int fd, chunkqueue *
+ 		return 0;
+ 	}
+ 
+-	r = writev(fd, chunks, num_chunks);
++	r = themis_writev(fd, chunks, num_chunks);
+ 
+ 	if (r < 0) switch (errno) {
+ 	case EAGAIN:
+diff --git a/src/server.c b/src/server.c
+index 24f11d5..b947aaf 100644
+--- a/src/server.c
++++ b/src/server.c
+@@ -14,6 +14,7 @@
+ #include "joblist.h"
+ #include "network_backends.h"
+ #include "version.h"
++#include "themis_socket.h"
+ 
+ #include <sys/types.h>
+ #include <sys/time.h>
+@@ -1212,7 +1213,7 @@ int main (int argc, char **argv) {
+ 
+ 	for (i = 0; i < srv->srv_sockets.used; i++) {
+ 		server_socket *srv_socket = srv->srv_sockets.ptr[i];
+-		if (-1 == fdevent_fcntl_set(srv->ev, srv_socket->fd)) {
++		if (-1 == fdevent_fcntl_set(srv->ev, ((themis_socket_t*)srv_socket->fd)->socket)) {
+ 			log_error_write(srv, __FILE__, __LINE__, "ss", "fcntl failed:", strerror(errno));
+ 			return -1;
+ 		}
+@@ -1406,7 +1407,7 @@ int main (int argc, char **argv) {
+ 			    (0 == graceful_shutdown)) {
+ 				for (i = 0; i < srv->srv_sockets.used; i++) {
+ 					server_socket *srv_socket = srv->srv_sockets.ptr[i];
+-					fdevent_event_set(srv->ev, &(srv_socket->fde_ndx), srv_socket->fd, FDEVENT_IN);
++					fdevent_event_set(srv->ev, &(srv_socket->fde_ndx), ((themis_socket_t*)srv_socket->fd)->socket, FDEVENT_IN);
+ 				}
+ 
+ 				log_error_write(srv, __FILE__, __LINE__, "s", "[note] sockets enabled again");
+@@ -1422,7 +1423,7 @@ int main (int argc, char **argv) {
+ 
+ 				for (i = 0; i < srv->srv_sockets.used; i++) {
+ 					server_socket *srv_socket = srv->srv_sockets.ptr[i];
+-					fdevent_event_del(srv->ev, &(srv_socket->fde_ndx), srv_socket->fd);
++					fdevent_event_del(srv->ev, &(srv_socket->fde_ndx), ((themis_socket_t*)srv_socket->fd)->socket);
+ 
+ 					if (graceful_shutdown) {
+ 						/* we don't want this socket anymore,
+@@ -1431,9 +1432,9 @@ int main (int argc, char **argv) {
+ 						 * the next lighttpd to take over (graceful restart)
+ 						 *  */
+ 
+-						fdevent_unregister(srv->ev, srv_socket->fd);
+-						close(srv_socket->fd);
+-						srv_socket->fd = -1;
++						fdevent_unregister(srv->ev, ((themis_socket_t*)srv_socket->fd)->socket);
++						themis_close(srv_socket->fd);
++						((themis_socket_t*)srv_socket->fd)->socket = -1;
+ 
+ 						/* network_close() will cleanup after us */
+ 
+diff --git a/src/themis_socket.c b/src/themis_socket.c
+new file mode 100644
+index 0000000..7f5efee
+--- /dev/null
++++ b/src/themis_socket.c
+@@ -0,0 +1,244 @@
++/*
++ * Copyright (c) 2015 Cossack Labs Limited
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#define THEMIS_UNUSE(x) ( (void)(x) )
++
++#include <errno.h>
++#include <sys/socket.h>
++#include <themis/themis.h>
++#include "themis_socket.h"
++#define MAX_KEY_LENGTH 10*1024
++
++static void send_callback(const uint8_t *data, size_t data_length, void *user_data){
++  int socket_fd = (int)user_data;
++  //  fprintf(stderr, "send %u bytes\n", data_length);
++  ssize_t bytes_sent = send(socket_fd, data, data_length, 0);
++  if (bytes_sent != (ssize_t)data_length){
++    printf("%d: %d\n", __LINE__, (int)bytes_sent);
++  }
++}
++
++static ssize_t receive_callback(uint8_t *data, size_t data_length, void *user_data){
++  int socket_fd = (int)user_data;
++  ssize_t res=recv(socket_fd, data, data_length, 0);
++  //  fprintf(stderr, "recv %i bytes\n", res);
++  return res;
++}
++
++static int get_pub_key_callback(const void *id, size_t id_length, void *key_buffer, size_t key_buffer_length, void *user_data){
++  THEMIS_UNUSE(user_data);
++  if(id_length == 0 || key_buffer_length == 0 || id == NULL || key_buffer_length<id_length)
++    return -1;
++  memcpy(key_buffer, id, id_length);
++  // fprintf(stderr, "get pub %i\n", id_length);
++  return 0;
++}
++
++int themis_socket(int domain, int type, int protocol){
++  themis_socket_t* ts=malloc(sizeof(themis_socket_t));
++  if(!ts)return -1;
++  ts->clb=NULL;
++  ts->socket=-1;
++  ts->session=NULL;
++  ts->socket=socket(domain, type, protocol);
++  return (int)ts;
++}
++
++int themis_accept(int themis_socket_, struct sockaddr* address, socklen_t* address_len){
++  uint8_t private_key[MAX_KEY_LENGTH];
++  uint8_t public_key[MAX_KEY_LENGTH];
++  size_t private_key_len=MAX_KEY_LENGTH;
++  size_t public_key_len=MAX_KEY_LENGTH;
++  themis_gen_ec_key_pair(private_key, &private_key_len, public_key, &public_key_len);
++  themis_socket_t* ts=malloc(sizeof(themis_socket_t));
++  if(!ts){return -1;}
++  ts->clb=NULL;
++  ts->socket=-1;
++  ts->session=NULL;
++  if(-1 == (ts->socket=accept(((themis_socket_t*)(themis_socket_))->socket, address, address_len))){
++    free(ts); 
++    return -1;
++  }
++  ts->clb=malloc(sizeof(secure_session_user_callbacks_t));
++  if(!(ts->clb)){free(ts); return -1;}
++  ts->clb->send_data=send_callback;
++  ts->clb->get_public_key_for_id=get_pub_key_callback;
++  ts->clb->receive_data=receive_callback;
++  ts->clb->state_changed=NULL;
++  ts->clb->user_data=(void*)(ts->socket);
++  ts->session=secure_session_create(public_key, public_key_len, private_key, private_key_len, ts->clb);
++  if(!(ts->session)){free(ts->clb);shutdown(ts->socket, SHUT_RDWR); free(ts); return -1;}
++  while(!secure_session_is_established(ts->session)){
++    if(0 > secure_session_receive(ts->session, NULL, 0)){
++      themis_close(ts);
++      return -1;
++    }
++  }
++  return (int)ts;
++}
++
++int themis_bind(int themis_socket_, struct sockaddr* address, socklen_t address_len){
++  return bind(((themis_socket_t*)(themis_socket_))->socket, address, address_len);
++}
++
++int themis_connect(int themis_socket_, struct sockaddr* address, socklen_t address_len){
++  uint8_t private_key[MAX_KEY_LENGTH];
++  uint8_t public_key[MAX_KEY_LENGTH];
++  size_t private_key_len=MAX_KEY_LENGTH;
++  size_t public_key_len=MAX_KEY_LENGTH;
++  themis_gen_ec_key_pair(private_key, &private_key_len, public_key, &public_key_len);
++  ((themis_socket_t*)(themis_socket_))->clb=malloc(sizeof(secure_session_user_callbacks_t));
++  if(!(((themis_socket_t*)(themis_socket_))->clb)){return -1;}
++  ((themis_socket_t*)(themis_socket_))->clb->send_data=send_callback;
++  ((themis_socket_t*)(themis_socket_))->clb->get_public_key_for_id=get_pub_key_callback;
++  ((themis_socket_t*)(themis_socket_))->clb->receive_data=receive_callback;
++  ((themis_socket_t*)(themis_socket_))->clb->state_changed=NULL;
++  ((themis_socket_t*)(themis_socket_))->clb->user_data=(void*)(((themis_socket_t*)(themis_socket_))->socket);
++  if(-1 == connect(((themis_socket_t*)(themis_socket_))->socket, address, address_len)){
++    free(((themis_socket_t*)(themis_socket_))->clb);
++    return -1;
++  }
++  ((themis_socket_t*)(themis_socket_))->session=secure_session_create(public_key, public_key_len, private_key, private_key_len, ((themis_socket_t*)(themis_socket))->clb);
++  if(!(((themis_socket_t*)(themis_socket_))->session)){
++    free(((themis_socket_t*)(themis_socket_))->clb);
++    shutdown(((themis_socket_t*)(themis_socket_))->socket, SHUT_RDWR);
++    return -1;
++  }
++  if(THEMIS_SUCCESS != secure_session_connect(((themis_socket_t*)(themis_socket_))->session)){
++    secure_session_destroy(((themis_socket_t*)(themis_socket_))->session);
++    free(((themis_socket_t*)(themis_socket_))->clb);
++    shutdown(((themis_socket_t*)(themis_socket_))->socket, SHUT_RDWR);
++    return -1;
++  }
++  while(!secure_session_is_established(((themis_socket_t*)(themis_socket_))->session)){
++    if(THEMIS_SUCCESS != secure_session_receive(((themis_socket_t*)(themis_socket_))->session, NULL, 0)){
++      secure_session_destroy(((themis_socket_t*)(themis_socket_))->session);
++      free(((themis_socket_t*)(themis_socket_))->clb);
++      shutdown(((themis_socket_t*)(themis_socket_))->socket, SHUT_RDWR);
++      return -1;
++    }
++  }
++  return 0;
++}
++
++int themis_getpeername(int themis_socket_, struct sockaddr *address, socklen_t *address_len){
++  return getpeername(((themis_socket_t*)(themis_socket_))->socket, address, address_len);
++}
++
++int themis_getsockname(int themis_socket_, struct sockaddr *address, socklen_t *address_len){
++  return getsockname(((themis_socket_t*)(themis_socket_))->socket, address, address_len);
++}
++
++int themis_getsockopt(int themis_socket_, int level, int option_name, void *option_value, socklen_t *option_len){
++  return getsockopt(((themis_socket_t*)(themis_socket_))->socket, level, option_name, option_value, option_len);
++}
++
++int themis_listen(int themis_socket_, int backlog){
++  return listen(((themis_socket_t*)(themis_socket_))->socket, backlog);
++}
++
++ssize_t themis_recv(int themis_socket_, void *buffer, size_t length, int flags){
++  //  fprintf(stderr, "session recv start\n");
++  ssize_t res = secure_session_receive(((themis_socket_t*)(themis_socket_))->session, buffer, length);
++  //  fprintf(stderr, "session recv %i bytes:\n %s\n",res, buffer);
++  return res;
++}
++
++ssize_t themis_read(int themis_socket_, void *buffer, size_t length){
++  ssize_t res = secure_session_receive(((themis_socket_t*)(themis_socket_))->session, buffer, length);
++  //  fprintf(stderr, "session read %i bytes:\n %s\n",res, buffer);
++  if(res < -1 ){errno=22;return -1;}
++  return res;
++}
++
++ssize_t themis_recvfrom(int themis_socket_, void *buffer, size_t length, int flags, struct sockaddr *address, socklen_t *address_len){
++  return -1;
++}
++
++ssize_t themis_recvmsg(int themis_socket_, struct msghdr *message, int flags){
++  return -1;
++}
++
++ssize_t themis_send(int themis_socket_, const void *message, size_t length, int flags){
++  return secure_session_send(((themis_socket_t*)(themis_socket_))->session, message, length);
++}
++
++ssize_t themis_writev(int themis_socket_, const struct iovec* iov, int iovcnt){
++  //  fprintf(stderr, "themis_writev start %i\n", iovcnt);
++  ssize_t res=0;
++  int i;
++  for(i=0;i<iovcnt;++i){
++    ssize_t temp_res=secure_session_send(((themis_socket_t*)(themis_socket_))->session, iov[i].iov_base, iov[i].iov_len);
++    //    fprintf(stderr, "themis_write chunk of %i bytes, as %i encrypted bytes:\n %s\n", iov[i].iov_len, temp_res, iov[i].iov_base);
++    if(temp_res<0 || temp_res<iov[i].iov_len)
++      return -1;
++    res+=temp_res;
++  }
++  return res;
++}
++
++ssize_t themis_sendfile(int themis_socket_, int in_fd, off_t* offset, size_t count){
++  char* buffer=malloc(count);
++  if(!buffer)return -1;
++  ssize_t res=read(in_fd, buffer, count);
++  if(res<count){free(buffer); return -1;}
++  res = secure_session_send(((themis_socket_t*)(themis_socket_))->session,buffer, count);
++  if(res<count){free(buffer); return -1;}  
++  return res;
++}
++
++ssize_t themis_sendmsg(int themis_socket_, const struct msghdr *message, int flags){
++  return -1;
++}
++
++ssize_t themis_sendto(int themis_socket_, const void *message, size_t length, int flags, const struct sockaddr *dest_addr, socklen_t dest_len){
++  return -1;
++}
++
++int themis_setsockopt(int themis_socket_, int level, int option_name, const void *option_value, socklen_t option_len){
++  return setsockopt(((themis_socket_t*)(themis_socket_))->socket, level, option_name, option_value, option_len);
++}
++
++int themis_shutdown(int themis_socket_, int how){
++  if((themis_socket_t*)(themis_socket_))
++    return shutdown(((themis_socket_t*)(themis_socket_))->socket, how);
++  return -1;
++}
++
++int themis_close(int themis_socket_){
++  if((themis_socket_t*)(themis_socket_)){
++    if(((themis_socket_t*)(themis_socket_))->session){
++      secure_session_destroy(((themis_socket_t*)(themis_socket_))->session);
++      ((themis_socket_t*)(themis_socket_))->session=NULL;
++    }
++    if(((themis_socket_t*)(themis_socket_))->clb){
++      free(((themis_socket_t*)(themis_socket_))->clb);
++      ((themis_socket_t*)(themis_socket_))->clb=NULL;
++    }
++    close(((themis_socket_t*)(themis_socket_))->socket);
++    free(((themis_socket_t*)(themis_socket_)));
++    
++    return 0;
++  }
++}
++
++int themis_socketpair(int domain, int type, int protocol, int socket_vector[2]){
++  THEMIS_UNUSE(domain);
++  THEMIS_UNUSE(type);
++  THEMIS_UNUSE(protocol);
++  THEMIS_UNUSE(socket_vector);
++  return -1;
++}
+diff --git a/themis_socket.h b/themis_socket.h
+new file mode 100644
+index 0000000..1b85262
+--- /dev/null
++++ b/themis_socket.h
+@@ -0,0 +1,50 @@
++/*
++ * Copyright (c) 2015 Cossack Labs Limited
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#ifndef THEMIS_SOCKET_H_
++#define THEMIS_SOCKET_H_
++
++#include <themis/themis.h>
++
++static void send_callback(const uint8_t *data, size_t data_length, void *user_data);
++static ssize_t receive_callback(uint8_t *data, size_t data_length, void *user_data);
++static int get_pub_key_callback(const void *id, size_t id_length, void *key_buffer, size_t key_buffer_length, void *user_data);
++
++typedef struct themis_socket{
++  secure_session_user_callbacks_t* clb;
++  secure_session_t* session;
++  int socket;
++} themis_socket_t; 
++
++int themis_socket(int domain, int type, int protocol);
++int themis_accept(int themis_socket, struct sockaddr* address, socklen_t* address_len);
++int themis_bind(int themis_socket, struct sockaddr* address, socklen_t address_len);
++int themis_connect(int themis_socket, struct sockaddr* address, socklen_t address_len);
++int themis_getpeername(int themis_socket, struct sockaddr *address, socklen_t *address_len);
++int themis_getsockname(int socket, struct sockaddr *address, socklen_t *address_len);
++int themis_getsockopt(int socket, int level, int option_name, void *option_value, socklen_t *option_len);
++int themis_listen(int socket, int backlog);
++ssize_t themis_recv(int socket, void *buffer, size_t length, int flags);
++ssize_t themis_recvfrom(int socket, void *buffer, size_t length, int flags, struct sockaddr *address, socklen_t *address_len);
++ssize_t themis_recvmsg(int socket, struct msghdr *message, int flags);
++ssize_t themis_send(int socket, const void *message, size_t length, int flags);
++ssize_t themis_sendmsg(int socket, const struct msghdr *message, int flags);
++ssize_t themis_sendto(int socket, const void *message, size_t length, int flags, const struct sockaddr *dest_addr, socklen_t dest_len);
++int themis_setsockopt(int themis_socket, int level, int option_name, const void *option_value, socklen_t option_len);
++int themis_shutdown(int themis_socket, int how);
++int themis_close(int themis_socket);
++int themis_socketpair(int domain, int type, int protocol, int socket_vector[2]);
++#endif /* THEMIS_SOCKET_H_ */
